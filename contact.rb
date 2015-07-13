@@ -1,33 +1,40 @@
+require_relative 'contact_database'
+
 class Contact
- 
-  attr_accessor :name, :email
- 
-  def initialize(name, email)
-    # TODO: assign local variables to instance variables
+
+  attr_accessor :id, :last_name, :first_name, :email
+
+  def initialize(id, last_name, first_name, email)
+    @id = CSV.open('contacts.csv').readlines.size + 1
+    @last_name = last_name
+    @first_name = first_name
+    @email = email
   end
- 
-  def to_s
-    # TODO: return string representation of Contact
-  end
- 
-  ## Class Methods
-  class << self
-    def create(name, email)
-      # TODO: Will initialize a contact as well as add it to the list of contacts
-    end
- 
-    def find(term)
-      # TODO: Will find and return contacts that contain the term in the first name, last name or email
-    end
- 
-    def all
-      # TODO: Return the list of contacts, as is
-    end
     
-    def show(id)
-      # TODO: Show a contact, based on ID
+    class << self
+
+      def create(id, last_name, first_name, email)
+        contacts_arr = [id, last_name, first_name, email]
+        CSV.open('contacts.csv', 'a') do |csv|
+        csv << contacts_arr
+      end
+
+      def find(request)
+        find_with_name = Database.new
+        find_with_name_.find(request)
+      end
+
+      def all
+        list = Database.new
+        list.display_all
+        
+      end
+
+      def show(id_request)
+        show_with_id = Database.new
+        show_with_id.show(request)
+      end
     end
-    
   end
- 
+
 end
